@@ -1,0 +1,17 @@
+<html>
+<script type="text/javascript">
+  window.onmessage = (event) => {
+    if (event.data) {
+       let receivedData = event.data;
+ document.getElementById("thelist").innerHTML= event.data
+    }
+  };
+  
+  //...
+  
+</script>
+
+<body>
+<div id = "thelist"></div>
+</body>
+</html>

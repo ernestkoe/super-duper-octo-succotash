@@ -39,13 +39,13 @@ function poelist(continuation, acc = []) {
           .then(response => response.json())
           .then(result => {
                let has_more_items = result.pagination["has_more_items"];
-               let continuation = result.pagination["continuation"]
+               let nextpagetoken = result.pagination["continuation"]
                let attendeespage = parselist(result)
                const newacc = acc.concat(attendeespage)
-               console.log(newacc)
+               //console.log(newacc)
 
                if (has_more_items) {
-                    poelist(continuation, newacc)
+                    return poelist(nextpagetoken, newacc)
                }
 
                else {

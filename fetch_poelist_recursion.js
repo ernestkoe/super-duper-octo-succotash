@@ -26,7 +26,7 @@ function poelist(continuation, acc = []) {
           process.env.API_URL :
           process.env.API_URL + "?continuation=" + continuation;
 
-     console.log(url) //comment me out later
+     //console.log(url) //comment me out later
      return fetch(
           url,
           {

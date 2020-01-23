@@ -2,32 +2,40 @@ const fetch = require("node-fetch");
 const dotenv = require('dotenv');
 dotenv.config();
 
+// hardcode these initial values for wix
+var API_URL = process.env.API_URL;
+var API_AUTH = process.env.API_AUTH;
+
+//parselist helper function to take result data from API and return what we need
 function parselist(result) {
      let attendees = result.attendees;
      //console.log(attendees)
      let pages = result.pagination;
      let attendee_list = "";
      let AttList = [];
-     let name = "";
      let i = 0;
      for (i in attendees) {
           let first_name = result.attendees[i].profile.first_name;
           let last_name = result.attendees[i].profile.last_name;
           let name = result.attendees[i].profile.name;
-          let company = result.attendees[i].profile.company;
-          //name = first_name + " " + last_name;
-          AttList.push({ name, company });
+          let __company = result.attendees[i].profile.company;
+          let company = (typeof __company === 'undefined' ) ? 'N/A' : __company;
+          let isAttendee = result.attendees[i].ticket_class_name ==='Attendee Admission' ;
+          if ( isAttendee ) { 
+                AttList.push({ name, company })
+          }
      }
      //console.log(AttList)
-     return AttList
+     const sAttList = AttList.sort((a,b) => ( a.name > b.name) ? 1: -1)
+     return sAttList
      
 };
 
-function poelist(continuation, acc = []) {
+function poelist(continuation='', acc = []) {
 
      let url = (continuation === "") ?
-          process.env.API_URL :
-          process.env.API_URL + "?continuation=" + continuation;
+          API_URL :
+          API_URL + "?continuation=" + continuation;
 
      //console.log(url) //comment me out later
      return fetch(
@@ -35,7 +43,7 @@ function poelist(continuation, acc = []) {
           {
                method: "GET",
                headers: {
-                    Authorization: process.env.API_AUTH
+                    Authorization: API_AUTH
                }
           }
      )
@@ -59,16 +67,25 @@ function poelist(continuation, acc = []) {
           .catch(console.error.bind(console));
 }
 
-// call it
-poelist("").then(myArray => {
-     //console.log(myArray);
-     var html = '<ul>' + myArray.map(function (element) {
-          if (element["name"] !== "Remove Remove") {
-               return '<li><div class="list-name">' + element["name"] +  
-               '</div><div class="list-company">' + element["company"] +  '</div></li>'
-          };
-     }).join('') + '</ul>';
-     //const newArray = myArray.map(nameobj => nameobj["name"]);
+// call poelist with initial empty 'continuation' string
+// this should be refactored into a test
 
-     console.log(html)
-});
+poelist("")
+      .then(myArray => {
+	   // $w("#text26").text = thelist
+        //$w("#table1").rows = thelist;
+      const attcount = myArray.length;
+	 var html = '<div class="attcount">' + attcount + ' attendees</div>' + '<ul class="list">' + myArray.map(function (element) {
+          let company = (typeof element["company"] === 'undefined') ? 'N/A': element["company"];
+          if ( element["name"] !== "Remove Remove") {
+                    return '</div><li><div class="list-item"><div class="list-name">' + element["name"] +  
+                    '</div><div class="list-company">' + company +  '</div></div></li>'
+               }
+     }).join('') + '</ul>';
+	 //  $w("#attendeelist").postMessage(html);
+	   console.log(html);
+	      // Logs: 20
+	})
+	.catch(error => {
+		console.log(error);
+	})

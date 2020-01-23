@@ -1,15 +1,15 @@
 // For full API documentation, including code examples, visit https://wix.to/94BuAAs
-import {poelist} from 'backend/aModule';
+import {Poelist} from 'backend/aModule';
 
 $w.onReady(function () {
-	poelist("")
+Poelist()
       .then(myArray => {
-	   // $w("#text26").text = thelist
-	   //$w("#table1").rows = thelist;
-	 var html = '<ul class="list">' + myArray.map(function (element) {
-          if (element["name"] !== "Remove Remove") {
-                    return '<li><div class="list-name">' + element["name"] +  
-                    '</div><div class="list-company">' + element["company"] +  '</div></li>'
+      const attcount = myArray.length;
+	 var html = '<div class="attcount">' + attcount + ' attendees</div>' + '<ul class="list">' + myArray.map(function (element) {
+          let company = (typeof element["company"] === 'undefined') ? 'N/A': element["company"];
+          if ( element["name"] !== "Remove Remove") {
+                    return '</div><li><div class="list-item"><div class="list-name">' + element["name"] +  
+                    '</div><div class="list-company">' + company +  '</div></div></li>'
                }
      }).join('') + '</ul>';
 	   $w("#attendeelist").postMessage(html);

@@ -6,8 +6,8 @@ dotenv.config();
 var API_URL = process.env.API_URL;
 var API_AUTH = process.env.API_AUTH;
 
-//parselist helper function to take result data from API and return what we need
-function parselist(result) {
+//Parselist helper function to take result data from API and return what we need
+function Parselist(result) {
      let attendees = result.attendees;
      //console.log(attendees)
      let pages = result.pagination;
@@ -31,7 +31,7 @@ function parselist(result) {
      
 };
 
-function poelist(continuation='', acc = []) {
+export function Poelist(continuation='', acc = []) {
 
      let url = (continuation === "") ?
           API_URL :
@@ -51,12 +51,12 @@ function poelist(continuation='', acc = []) {
           .then(result => {
                let has_more_items = result.pagination["has_more_items"];
                let nextpagetoken = result.pagination["continuation"]
-               let attendeespage = parselist(result)
+               let attendeespage = Parselist(result)
                const newacc = acc.concat(attendeespage)
                //console.log(newacc)
 
                if (has_more_items) {
-                    return poelist(nextpagetoken, newacc)
+                    return Poelist(nextpagetoken, newacc)
                }
 
                else {
@@ -67,13 +67,10 @@ function poelist(continuation='', acc = []) {
           .catch(console.error.bind(console));
 }
 
-// call poelist with initial empty 'continuation' string
-// this should be refactored into a test
+// TEST
 
-poelist("")
+Poelist()
       .then(myArray => {
-	   // $w("#text26").text = thelist
-        //$w("#table1").rows = thelist;
       const attcount = myArray.length;
 	 var html = '<div class="attcount">' + attcount + ' attendees</div>' + '<ul class="list">' + myArray.map(function (element) {
           let company = (typeof element["company"] === 'undefined') ? 'N/A': element["company"];
@@ -82,7 +79,7 @@ poelist("")
                     '</div><div class="list-company">' + company +  '</div></div></li>'
                }
      }).join('') + '</ul>';
-	 //  $w("#attendeelist").postMessage(html);
+	   $w("#attendeelist").postMessage(html);
 	   console.log(html);
 	      // Logs: 20
 	})

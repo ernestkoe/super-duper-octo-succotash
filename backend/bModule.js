@@ -1,3 +1,4 @@
+// this is a simple version of the fetch backend
 const fetch = require('node-fetch');
 const dotenv = require('dotenv');
 dotenv.config();

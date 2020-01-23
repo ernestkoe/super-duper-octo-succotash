@@ -10,9 +10,11 @@ Ha. Installaion is just copy-pasta, sadly. Aslo, note that this was built with E
 
 ## Usage
 
-You'll need to configure an .env file with the following variables
-`API_AUTH=Bearer = YOURTOKENHERE`
-`API_URL=https://www.eventbriteapi.com/v3/events/{YOUR-EVENT-ID-HERE}/attendees/`
+You'll need to configure an .env file with the following variables:
+
+API_AUTH=Bearer = YOURTOKENHERE`
+API_URL=https://www.eventbriteapi.com/v3/events/{YOUR-EVENT-ID-HERE}/attendees/
+
 
 The backend module code can be found in the `'backend` folder. Wix's names it's files with a `.jsw` extension, so you'll have to change that accordingly. `aModule.js` contains the bits that recursively fetches data from eventbrite. `bModule.js` is a just a simple, single fetch call example.
 

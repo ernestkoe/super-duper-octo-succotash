@@ -16,7 +16,7 @@ function parselist(result) {
           name = first_name + " " + last_name;
           AttList.push({ name: name });
      }
-    
+
      return AttList
 };
 
@@ -57,6 +57,14 @@ function poelist(continuation, acc = []) {
 }
 
 // call it
-poelist("").then(result => {
-     console.log(result);
+poelist("").then(myArray => {
+     //console.log(myArray);
+     var html = '<ul>' + myArray.map(function (element) {
+          if (element["name"] !== "Remove Remove") {
+               return '<li><div class="list-box">' + element["name"] + '</li>'
+          };
+     }).join('') + '</ul>';
+     //const newArray = myArray.map(nameobj => nameobj["name"]);
+
+     console.log(html)
 });

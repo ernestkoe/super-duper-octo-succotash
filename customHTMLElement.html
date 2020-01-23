@@ -1,4 +1,20 @@
 <html>
+<head>
+<style>
+.list { 
+ list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list-item {
+  border: 0pt;
+  width: 180px;
+  font-family: "Arial";
+  color: white;
+  margin: 0pt;
+}
+</style>
 <script type="text/javascript">
   window.onmessage = (event) => {
     if (event.data) {
@@ -6,11 +22,8 @@
  document.getElementById("thelist").innerHTML= event.data
     }
   };
-  
-  //...
-  
 </script>
-
+</head>
 <body>
 <div id = "thelist"></div>
 </body>

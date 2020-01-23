@@ -19,6 +19,8 @@
   window.onmessage = (event) => {
     if (event.data) {
        let receivedData = event.data;
+       let countData = event.data.length;
+       console.log(countData);
  document.getElementById("thelist").innerHTML= event.data
     }
   };

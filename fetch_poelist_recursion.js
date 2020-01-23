@@ -3,8 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 function parselist(result) {
-
      let attendees = result.attendees;
+     //console.log(attendees)
      let pages = result.pagination;
      let attendee_list = "";
      let AttList = [];
@@ -13,11 +13,14 @@ function parselist(result) {
      for (i in attendees) {
           let first_name = result.attendees[i].profile.first_name;
           let last_name = result.attendees[i].profile.last_name;
-          name = first_name + " " + last_name;
-          AttList.push({ name: name });
+          let name = result.attendees[i].profile.name;
+          let company = result.attendees[i].profile.company;
+          //name = first_name + " " + last_name;
+          AttList.push({ name, company });
      }
-
+     //console.log(AttList)
      return AttList
+     
 };
 
 function poelist(continuation, acc = []) {
@@ -61,7 +64,8 @@ poelist("").then(myArray => {
      //console.log(myArray);
      var html = '<ul>' + myArray.map(function (element) {
           if (element["name"] !== "Remove Remove") {
-               return '<li><div class="list-box">' + element["name"] + '</li>'
+               return '<li><div class="list-name">' + element["name"] +  
+               '</div><div class="list-company">' + element["company"] +  '</div></li>'
           };
      }).join('') + '</ul>';
      //const newArray = myArray.map(nameobj => nameobj["name"]);

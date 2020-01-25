@@ -1,5 +1,5 @@
 // For full API documentation, including code examples, visit https://wix.to/94BuAAs
-import {Poelist} from 'backend/aModule';
+import {Poelist} from 'backend/eventbriteUtils';
 
 $w.onReady(function () {
 Poelist()

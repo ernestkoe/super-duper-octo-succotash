@@ -26,12 +26,13 @@ function Parselist(result) {
           }
      }
      //console.log(AttList)
-     const sAttList = AttList.sort((a,b) => ( a.name > b.name) ? 1: -1)
-     return sAttList
+     /* const sAttList = AttList.sort((a,b) => ( a.name > b.name) ? 1: -1)
+     */
+     return AttList
      
 };
 
-export function Poelist(continuation='', acc = []) {
+function Poelist(continuation='', acc = []) {
 
      let url = (continuation === "") ?
           API_URL :
@@ -63,6 +64,10 @@ export function Poelist(continuation='', acc = []) {
                     return newacc
                }
           })
+          .then( unsortedlist => {     
+                return unsortedlist.sort((a,b) => ( a.name > b.name) ? 1: -1);
+          })
+          
           //.then(console.log.bind(console))
           .catch(console.error.bind(console));
 }
@@ -79,7 +84,7 @@ Poelist()
                     '</div><div class="list-company">' + company +  '</div></div></li>'
                }
      }).join('') + '</ul>';
-	   $w("#attendeelist").postMessage(html);
+	   //$w("#attendeelist").postMessage(html);
 	   console.log(html);
 	      // Logs: 20
 	})

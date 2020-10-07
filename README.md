@@ -2,7 +2,7 @@
 
 Author: @ernestkoe, ernest.koe@proofgroup.com
 
-`super-duper-octo-succotash` is a bunch of javascript backend and frontend code to integrate Eventbrite, our event management app and Wix, the web site software platform for PauseOnError's. I wrote this for PoE St. Louis, 2020 and it's hardcoded to that event id; but pointing to a different event is fairly trivial.
+`pause-on-succotash` is a bunch of javascript backend and frontend code to integrate Eventbrite, our event management app and Wix, the web site software platform for PauseOnError's. I wrote this for PoE St. Louis, 2020 and it's hardcoded to that event id; but pointing to a different event is fairly trivial.
 
 ## Installation
 

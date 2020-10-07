@@ -1,4 +1,4 @@
-# super-duper-octo-succotash
+# pause-on-succotash
 
 Author: @ernestkoe, ernest.koe@proofgroup.com
 

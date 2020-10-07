@@ -1,0 +1,94 @@
+import wixData from 'wix-data';
+
+async function fetchData() {
+
+    let result = await wixData.query('MemberDetails')
+        .limit(1000)
+        .find(); // Result is WixDataQueryResult and has next() method
+
+    let allItems = result.items;
+
+    while (result.hasNext()) { // Repeat while there is a next page
+        result = await result.next(); // We fetch next page the easy way, without using skip and limit
+        allItems = allItems.concat(result.items); // We add results of the next page to allItems
+    }
+    return allItems; // In the end we return the list of items from all pages
+}
+
+export function getLoc() {
+
+    wixData.query("Member Details")
+        .find()
+        .then((results) => {
+            console.log(results)
+        })
+}
+
+export function buildLoc() {
+
+    const obj = {};
+
+    // Step 1. Group the results by zipcode
+
+    fetchData().then((results) => {
+        for (var i in results) {
+            let item = results[i];
+            let address = results[i].zipCode
+            let zipCode = results[i].zipCode.postalCode;
+            let title = results[i].title;
+            let linkedin = results[i].linkedin;
+            let dbItem = {
+                "linkedin": linkedin,
+                "title": title,
+                "zipcode": address
+                //"address": address
+            }
+
+            if (!obj[zipCode]) {
+                obj[zipCode] = [];
+            }
+            obj[zipCode].push(dbItem)
+
+        }
+        //console.log(obj)
+
+        //Step 2. Recompose
+        for (var z in obj) { // each obj is keyed by a zipcode
+            let acc = []
+            let zipcode = z;
+            var o = obj[z];
+            //console.log(o)
+
+            for (var x in o) {
+                //console.log(o[x]);
+                var _linkedin = o[x].linkedin;
+                var _title = o[x].title;
+                var zip = o[x].zipcode;
+                var _htmlbits = _title + " (<a href=\"" + _linkedin + "\" target=_\"_blank\"><u>View</u></a>)";
+                acc.push(_htmlbits)
+            }
+
+            var desc = "<div class='font_8'>" +  acc.join("<br>") + "</div>"
+            let ptitle = ""
+            if ( acc.length === 1 ) {
+               ptitle  = acc.length +  " person"; } else {
+               ptitle = acc.length + " people"
+               }
+            let toSave = {
+                _id: z,
+                description: desc,
+                title: ptitle,
+                zipcode: zip,
+            }
+            console.log(toSave)
+            wixData.save("Locations", toSave).then((locresults) => {
+                    let item = locresults; //see item below
+                })
+                .catch((err) => {
+                    let errorMsg = err;
+                });
+
+        }
+
+    })
+}
